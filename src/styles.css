@@ -1,0 +1,18 @@
+.weather-data-container {
+    display: flex;
+    gap: 10px;
+}
+
+.weather-card {
+    border: 2px solid black;
+    padding: 10px;
+    width: 125px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.weather-icon {
+    width: 50px;
+    height: 50px;
+}
