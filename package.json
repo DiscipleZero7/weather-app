@@ -1,0 +1,33 @@
+{
+  "name": "template-basic-plus",
+  "version": "1.0.0",
+  "description": "Basic skeleton files for HTML, CSS, and JS with the inclusion of Webpack and ESlint/Prettier configs.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DiscipleZero7/template-basic-plus.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DiscipleZero7/template-basic-plus/issues"
+  },
+  "homepage": "https://github.com/DiscipleZero7/template-basic-plus#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "css-loader": "^7.1.4",
+    "eslint": "^10.0.3",
+    "globals": "^17.4.0",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.6",
+    "prettier": "3.8.1",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.105.4",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.3"
+  }
+}
