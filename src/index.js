@@ -6,10 +6,13 @@ import windy from "./icons/windy.png"
 import thunderstorm from "./icons/lightning-bolt.png";
 import snow from "./icons/snow.png";
 
+let titleHeader = document.querySelector(".title-header");
 const weatherInput = document.querySelector(".weather-input");
 const weatherSubmitBtn = document.querySelector(".weather-submit-button");
+const tempConverterBtn = document.querySelector(".temp-converter-button")
 const weatherDataContainer = document.querySelector(".weather-data-container");
 const daysOfTheWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+let selectedTemp = "Fahrenheit";
 
 function getWeather(location) {
     fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/next6days?unitGroup=us&key=S8W2PXA35LL8XYZZWWCAA4289&contentType=json`)
@@ -28,12 +31,14 @@ function getWeather(location) {
 
             const weatherDay = document.createElement("h3");
             const weatherIcon = document.createElement("img");
-            const weatherTemp = document.createElement("p");
+            const weatherTemp = document.createElement("h2");
+            const weatherHighLow = document.createElement("p");
   
             weatherCard.classList.add("weather-card");
             weatherDay.classList.add("weather-day");
             weatherIcon.classList.add("weather-icon");
             weatherTemp.classList.add("weather-temp");
+            weatherHighLow.classList.add("weather-high-low");
 
             weatherDay.textContent = daysOfTheWeek[new Date(e.datetime).getDay()];
             switch (e.icon) {
@@ -76,11 +81,15 @@ function getWeather(location) {
                     weatherIcon.src = windy;
                     break;
             }
-            weatherTemp.textContent = e.temp;
+            weatherTemp.textContent = (convertTemp(selectedTemp, e.temp)).toFixed(0) + "°" + selectedTemp[0];
+
+            //weatherHighLow.textContent = `${e.tempmax.toFixed(0)}° / ${e.tempmin.toFixed(0)}°`;
+            weatherHighLow.textContent = `${convertTemp(selectedTemp, e.tempmax).toFixed(0)}° / ${convertTemp(selectedTemp, e.tempmin).toFixed(0)}°`;
 
             weatherCard.appendChild(weatherDay);
             weatherCard.appendChild(weatherIcon);
             weatherCard.appendChild(weatherTemp);
+            weatherCard.appendChild(weatherHighLow);
 
             weatherDataContainer.appendChild(weatherCard);
         })
@@ -89,9 +98,31 @@ function getWeather(location) {
     })
 }
 
-
+function convertTemp(type, temp) {
+    switch (type) {
+        case("Fahrenheit"):
+            return temp;
+        
+        case("Celsius"):
+            return ((temp - 32) * 5/9);
+    }
+}
 
 weatherSubmitBtn.addEventListener(("click"), (button) => {
     button.preventDefault();
     getWeather(weatherInput.value);
+    titleHeader.textContent = `What's the Weather in ${weatherInput.value}?`;
 });
+
+tempConverterBtn.addEventListener("click", (button) => {
+    button.preventDefault();
+
+    if (selectedTemp === "Fahrenheit") {
+        selectedTemp = "Celsius";
+    } else {
+        selectedTemp = "Fahrenheit";
+    }
+
+    console.log(`Selected Temp: ${selectedTemp}`)
+    console.log(weatherDataContainer)
+})

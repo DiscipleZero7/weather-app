@@ -4,14 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
   </head>
   <body>
-    <form>
+    <h1 class="title-header">What's the Weather in...?</h1>
+    <div class="weather-data-container"></div>
+    <form class="weather-form">
       <input class="weather-input" type="text">
-      <button class="weather-submit-button">Get Weather!</button>
+      <div class="button-container">
+        <button class="weather-submit-button">Get Weather!</button>
+        <button class="temp-converter-button">Fahrenheit / Celsius</button>
+      </div>
     </form>
-    <div class="weather-data-container">
-
-    </div>
   </body>
 </html>
