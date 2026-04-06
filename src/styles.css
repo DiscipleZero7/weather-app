@@ -21,6 +21,8 @@ body {
     font-family: "Pixelify Sans", sans-serif;
     font-size: 6rem;
     color: aliceblue;
+    -webkit-text-stroke: 1px black;
+    letter-spacing: 1px;
 }
 
 .weather-data-container {
@@ -79,4 +81,19 @@ body {
 .weather-icon {
     width: 100px;
     height: 100px;
+}
+
+.loading-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-text {
+    position: absolute;
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 2rem;
+    color: aliceblue;
+    -webkit-text-stroke: 1px black;
+    letter-spacing: 1px;
 }

@@ -11,20 +11,27 @@ const weatherInput = document.querySelector(".weather-input");
 const weatherSubmitBtn = document.querySelector(".weather-submit-button");
 const tempConverterBtn = document.querySelector(".temp-converter-button")
 const weatherDataContainer = document.querySelector(".weather-data-container");
+const loadingStatus = document.querySelector(".loading-status");
 const daysOfTheWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-let selectedTemp = "Fahrenheit";
+let selectedTemp = "F";
+let forecastDisplay = false;
+let lastSearch = "";
+let unitType = "us";
 
-function getWeather(location) {
-    fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/next6days?unitGroup=us&key=S8W2PXA35LL8XYZZWWCAA4289&contentType=json`)
+function getWeather(location, unitType) {
+    const loadingElement = document.createElement("h1");
+    loadingElement.classList.add("loading-text");
+    loadingElement.textContent = "Loading...";
+    loadingStatus.appendChild(loadingElement);
+
+    fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/next6days?unitGroup=${unitType}&key=S8W2PXA35LL8XYZZWWCAA4289&contentType=json`)
     .then((response) => {
         if (!response.ok) {
-            console.warn("Please enter a valid location.");
             return null;
         }
         return response.json()
     })
     .then((response) => {
-        console.log(response)
         weatherDataContainer.innerHTML = "";
         response.days.forEach((e) => {
             const weatherCard = document.createElement("div");
@@ -81,10 +88,9 @@ function getWeather(location) {
                     weatherIcon.src = windy;
                     break;
             }
-            weatherTemp.textContent = (convertTemp(selectedTemp, e.temp)).toFixed(0) + "°" + selectedTemp[0];
+            weatherTemp.textContent = e.temp.toFixed(0) + "°" + selectedTemp[0];
 
-            //weatherHighLow.textContent = `${e.tempmax.toFixed(0)}° / ${e.tempmin.toFixed(0)}°`;
-            weatherHighLow.textContent = `${convertTemp(selectedTemp, e.tempmax).toFixed(0)}° / ${convertTemp(selectedTemp, e.tempmin).toFixed(0)}°`;
+            weatherHighLow.textContent = `${e.tempmax.toFixed(0)}° / ${e.tempmin.toFixed(0)}°`;
 
             weatherCard.appendChild(weatherDay);
             weatherCard.appendChild(weatherIcon);
@@ -93,38 +99,35 @@ function getWeather(location) {
 
             weatherDataContainer.appendChild(weatherCard);
         })
-    }).catch(() => {
-        console.error("Invalid input/location");
+        forecastDisplay = true;
+        lastSearch = response.address;
     })
-}
-
-function convertTemp(type, temp) {
-    switch (type) {
-        case("Fahrenheit"):
-            return temp;
-        
-        case("Celsius"):
-            return ((temp - 32) * 5/9);
-    }
+    .finally(() => {
+        loadingElement.remove();
+    })
+    .catch(() => {
+        alert("Invalid input/location")
+    })
 }
 
 weatherSubmitBtn.addEventListener(("click"), (button) => {
     button.preventDefault();
-    getWeather(weatherInput.value);
+    getWeather(weatherInput.value, unitType);
     titleHeader.textContent = `What's the Weather in ${weatherInput.value}?`;
 });
 
-tempConverterBtn.addEventListener("click", (button) => {
-    button.preventDefault();
-
-    if (selectedTemp === "Fahrenheit") {
-        selectedTemp = "Celsius";
+tempConverterBtn.addEventListener("click", () => {
+    if (unitType === "us") {
+        unitType = "uk";
+        selectedTemp = "C";
     } else {
-        selectedTemp = "Fahrenheit";
+        unitType = "us";
+        selectedTemp = "F";
     }
 
-    console.log(`Selected Temp: ${selectedTemp}`)
-    console.log(weatherDataContainer)
+    if (forecastDisplay === true) {
+        getWeather(lastSearch, unitType);
+    }
 })
 
 //REFACTOR
