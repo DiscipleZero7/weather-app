@@ -126,3 +126,5 @@ tempConverterBtn.addEventListener("click", (button) => {
     console.log(`Selected Temp: ${selectedTemp}`)
     console.log(weatherDataContainer)
 })
+
+//REFACTOR
