@@ -129,5 +129,3 @@ tempConverterBtn.addEventListener("click", () => {
         getWeather(lastSearch, unitType);
     }
 })
-
-//REFACTOR
